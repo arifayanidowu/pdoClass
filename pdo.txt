@@ -1,0 +1,61 @@
+PDO -> PHP Data Objects
+  
+  -> Objects =>  Means grouping sequences of the same or similar properties or functionalities together.
+
+instantiation => Means creating an object, linking objects of linking characteristics together in order to make a connection.
+	ex. $db = mysqli_connect("localhost", "root", "", dbname) or die(mysqli_error($db));
+// The above code is to create a connection with the database using mysqli syntaxes...but with PDO, that won't be relevant
+
+PDO -> Exists to provide a better security over the use of mysql
+
+// Below is a code on how to instantiate a connection using PDO
+$conn = new PDO('driver: host; dbname='.DBNAME, DBUSER, DBPASS);
+ To protect the database connection, you use a constant (define) and your vital information is secured
+
+// In Your Xshell
+	-> sudo -s
+	-> cd /etc
+	-> ls
+	-> cd php
+	-> cd 7.0
+	-> ls
+	-> cd fpm
+	-> nano php.ini
+	{look for Error Handling}
+	navigate to display errors, change from off to on
+	-> cd ~
+	-> service nginx restart
+	-> service php7.0-fpm restart
+	-> ln -s /usr/share/phpmyadmin /vagrant/www [to link your phpmyadmin]
+
+CRUD -> Create
+		Read
+		Update
+		Delete
+
+//Querying the database
+
+	$conn->prepare("SELECT * FROM user where username=:n");
+
+	$conn->bindParam(":n",$name);
+	$conn->bindValue(":n", "doe"); // Not as efficient as bindParam
+
+// Wrtiting a database connection in PHP data Objects (PDO)
+	<?php
+	
+	define('DBNAME', 'store'); /*THIS IS A CONSTANT AND THIS IS HOW TO DEFINE IT*/
+	define('DBUSER', 'root');/*THIS IS DONE TO PROTECT OUR CONNECTION STRING FROM ATTACKERS*/
+	define('DBPASS', 'boss123');
+
+	try{ /*this is to try to catch an error*/
+
+	$conn = new PDO('mysql:host=localhost;dbname='.DBNAME, DBUSER, DBPASS);
+
+	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+
+	} catch(PDOException $err){ /*this catch catches error thrown*/ /*Exceptions in programming means errors*/
+		echo $err->getMessage(); /*getMessage is a property of PDOException*/
+	}
+
+?>
+
